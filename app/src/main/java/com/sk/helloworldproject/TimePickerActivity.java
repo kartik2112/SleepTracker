@@ -1,0 +1,15 @@
+package com.sk.helloworldproject;
+
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+
+public class TimePickerActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.time_picker_layout);
+
+
+    }
+}

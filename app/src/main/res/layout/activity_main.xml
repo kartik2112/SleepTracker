@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sk.helloworldproject.MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/sleepBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginTop="10dp"
+            android:id="@+id/sleepTimeImageView"
+            android:src="@mipmap/sleep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/sleepTimeTxtView"
+            android:layout_toRightOf="@id/sleepTimeImageView"
+            android:text="Sleep Time"
+            android:textSize="25sp"
+            android:fontFamily="cursive"
+            android:padding="20dp"
+            android:textColor="@color/textColorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextClock
+            android:id="@+id/sleepTextClock"
+            android:layout_below="@id/sleepTimeTxtView"
+            android:background="@color/colorAccent"
+            android:textColor="@color/textColorComplement"
+            android:gravity="center_horizontal"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:text="11:30 PM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/wakeUpBlock"
+        android:layout_below="@id/sleepBlock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_marginTop="20dp"
+            android:id="@+id/wakeUpTimeImageView"
+            android:src="@mipmap/wakeup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/wakeUpTimeTxtView"
+            android:layout_toRightOf="@id/wakeUpTimeImageView"
+            android:text="Wake Up Time"
+            android:textSize="25sp"
+            android:fontFamily="cursive"
+            android:padding="20dp"
+            android:textColor="@color/textColorPrimary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextClock
+            android:id="@+id/wakeUpTextClock"
+            android:layout_below="@id/wakeUpTimeTxtView"
+            android:background="@color/colorAccent"
+            android:textColor="@color/textColorComplement"
+            android:gravity="center_horizontal"
+            android:textSize="50sp"
+            android:padding="30dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <Button
+        android:layout_below="@id/wakeUpBlock"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorAccentSecondary"
+        android:textColor="@color/textColorComplement"
+        android:text="Add Times"/>
+
+</RelativeLayout>
