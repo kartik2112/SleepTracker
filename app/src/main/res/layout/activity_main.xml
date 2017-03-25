@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sk.helloworldproject.MainActivity">
+    tools:context="com.sk.sleeptracker.MainActivity">
 
     <RelativeLayout
         android:id="@+id/sleepBlock"
@@ -74,14 +74,57 @@
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-    <Button
+    <LinearLayout
+        android:id="@+id/linLay"
         android:layout_below="@id/wakeUpBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Space
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/setTimeBtn"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorAccent"
+            android:textColor="@color/textColorComplement"
+            android:text="Add Times"/>
+        <Space
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <Button
+            android:id="@+id/checkTimes"
+            android:padding="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/colorAccentSecondary"
+            android:textColor="@color/textColorComplement"
+            android:text="Check Times"/>
+        <Space
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/setAlarm"
+        android:layout_below="@id/linLay"
+        android:padding="10dp"
         android:layout_marginTop="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:background="@color/colorAccentSecondary"
         android:textColor="@color/textColorComplement"
-        android:text="Add Times"/>
+        android:text="Set Alarm For Tomorrow"/>
 
 </RelativeLayout>

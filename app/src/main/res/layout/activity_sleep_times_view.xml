@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SleepTimesView">
+
+
+    <CalendarView
+        android:id="@+id/cal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></CalendarView>
+    <RelativeLayout
+        android:layout_below="@id/cal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/sleepBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+            <ImageView
+                android:layout_weight="2"
+                android:layout_marginTop="10dp"
+                android:id="@+id/sleepTimeImageView"
+                android:src="@mipmap/sleep"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <TextClock
+                android:layout_weight="8"
+                android:id="@+id/sleepTextClock"
+                android:layout_toRightOf="@id/sleepTimeImageView"
+                android:background="@color/colorAccent"
+                android:textColor="@color/textColorComplement"
+                android:gravity="center_horizontal"
+                android:textSize="40sp"
+                android:padding="20dp"
+                android:text="11:30 PM"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_below="@id/sleepBlock"
+            android:id="@+id/wakeUpBlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+            <ImageView
+                android:layout_weight="2"
+                android:layout_marginTop="20dp"
+                android:id="@+id/wakeUpTimeImageView"
+                android:src="@mipmap/wakeup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+            <TextClock
+                android:layout_weight="8"
+                android:id="@+id/wakeupTextClock"
+                android:layout_toRightOf="@id/wakeUpTimeImageView"
+                android:background="@color/colorAccent"
+                android:textColor="@color/textColorComplement"
+                android:gravity="center_horizontal"
+                android:textSize="40sp"
+                android:padding="20dp"
+                android:text="11:30 PM"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
