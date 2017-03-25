@@ -27,8 +27,8 @@
             android:textColor="@color/textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextClock
-            android:id="@+id/sleepTextClock"
+        <TextView
+            android:id="@+id/sleepTextClock1"
             android:layout_below="@id/sleepTimeTxtView"
             android:background="@color/colorAccent"
             android:textColor="@color/textColorComplement"
@@ -62,10 +62,11 @@
             android:textColor="@color/textColorPrimary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
-        <TextClock
-            android:id="@+id/wakeUpTextClock"
+        <TextView
+            android:id="@+id/wakeUpTextClock1"
             android:layout_below="@id/wakeUpTimeTxtView"
             android:background="@color/colorAccent"
+            android:text="6:00 AM"
             android:textColor="@color/textColorComplement"
             android:gravity="center_horizontal"
             android:textSize="50sp"

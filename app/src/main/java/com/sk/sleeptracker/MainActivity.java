@@ -3,6 +3,7 @@ package com.sk.sleeptracker;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextClock;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -19,7 +20,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
-    private TextClock sleepTxtClck,wakeupTxtClck;
+    private TextView sleepTxtClck,wakeupTxtClck;
     private Calendar sleepTime,wakeupTime;
     private Button addButton,checkTimesButton,setAlarmButton;
     public static final int REQUEST_TYPE_FOR_SLEEP=2;
@@ -34,22 +35,36 @@ public class MainActivity extends AppCompatActivity {
         sleepTime=Calendar.getInstance();
         wakeupTime=Calendar.getInstance();
 
-
+        sleepTxtClck=(TextView)findViewById(R.id.sleepTextClock1);
+        wakeupTxtClck=(TextView)findViewById(R.id.wakeUpTextClock1);
 
         /**
-         * This will set sleep and wakeup times to standard ones
+         * SharedPreferences are checked to see if this particular preference has been added to it.
+         * If it has been then, this is the time set for wakeuptime, else standard 6 am time will be set.
          */
-        sleepTime.set(Calendar.HOUR_OF_DAY,23);
-        sleepTime.set(Calendar.MINUTE,30);
+        SharedPreferences sp=this.getSharedPreferences(getString(R.string.alarm_name),MODE_PRIVATE);
+        String timeFromSP=sp.getString(getString(R.string.alarm_name),"None");
 
-        wakeupTime.set(Calendar.HOUR_OF_DAY,6);
-        wakeupTime.set(Calendar.MINUTE,0);
+        boolean wakeUpTimeSet=false;
+        if(timeFromSP.equals("None")){
+            /**
+             * This will set sleep and wakeup times to standard ones
+             */
+            sleepTime.set(Calendar.HOUR_OF_DAY,23);
+            sleepTime.set(Calendar.MINUTE,30);
 
-        sleepTxtClck=(TextClock)findViewById(R.id.sleepTextClock);
-        wakeupTxtClck=(TextClock)findViewById(R.id.wakeUpTextClock);
+            wakeupTime.set(Calendar.HOUR_OF_DAY,6);
+            wakeupTime.set(Calendar.MINUTE,0);
 
-        setTextClockTime(sleepTxtClck,sleepTime);
-        setTextClockTime(wakeupTxtClck,wakeupTime);
+            setTextClockTime(sleepTxtClck,sleepTime);
+            setTextClockTime(wakeupTxtClck,wakeupTime);
+        }
+        else{
+            wakeUpTimeSet=true;
+            wakeupTime=getTimeAsCalendar(timeFromSP);
+            setTextClockTime(wakeupTxtClck,wakeupTime);
+        }
+
 
         sqlDB=DBHandle.createDBTables(this);
         Cursor findTimes=sqlDB.rawQuery("SELECT * FROM SleepTimes where Date='"+new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime())+"'",null);
@@ -69,7 +84,15 @@ public class MainActivity extends AppCompatActivity {
                     }while (findTimes.moveToNext());
                 }
                 sleepTxtClck.setText(sleepTimeS);
-                wakeupTxtClck.setText(wakeUpTimeS);
+                sleepTime=getTimeAsCalendar(sleepTimeS);
+
+                if(!wakeUpTimeSet){
+                    /**
+                     * Set wakeup time to dbValue if alarm is not set
+                     */
+                    wakeupTxtClck.setText(wakeUpTimeS);
+                    wakeupTime=getTimeAsCalendar(wakeUpTimeS);
+                }
             }
         }
         catch(Exception e){
@@ -122,8 +145,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                     if(findTimes!=null && findTimes.getCount()!=0){
-
-
                         String stmt="UPDATE SleepTimes SET SleepTime='"+getTimeAsString(sleepTime)+"', WakeupTime='"+getTimeAsString(wakeupTime)+"' WHERE Date='"+new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime())+"'";
                         sqlDB.execSQL(stmt);
                         Log.d("ABCABC",stmt);
@@ -173,56 +194,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        sqlDB=DBHandle.createDBTables(this);
-        Cursor findTimes=sqlDB.rawQuery("SELECT * FROM SleepTimes where Date='"+new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime())+"'",null);
-
-        try{
-            String dateHandle=null;
-            String sleepTimeS=null;
-            String wakeUpTimeS=null;
-
-            if(findTimes!=null){
-                if(findTimes.moveToFirst()){
-                    do{
-                        dateHandle=findTimes.getString( findTimes.getColumnIndex("Date"));
-                        sleepTimeS=findTimes.getString( findTimes.getColumnIndex("SleepTime"));
-                        wakeUpTimeS=findTimes.getString( findTimes.getColumnIndex("WakeupTime"));
-
-                    }while (findTimes.moveToNext());
-                }
-                sleepTxtClck.setText(sleepTimeS);
-                wakeupTxtClck.setText(wakeUpTimeS);
-            }
-        }
-        catch(Exception e){
-            Log.d("ABCABC",e.toString());
-        }
-        finally {
-            findTimes.close();
-            sqlDB.close();
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode==REQUEST_TYPE_FOR_SLEEP){
             if(resultCode==RESULT_OK){
+                sleepTime=getTimeAsCalendar(data.getStringExtra("Time"));
                 String timeDisplay=data.getStringExtra("Time");
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm aa");
-                Date date1=new Date();
-                try {
-                    date1 = dateFormat.parse(data.getStringExtra("Time"));
-                    Log.e("Time", ""+date1);
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    Log.e("Error", ""+e);
-                }
-                sleepTime.set(Calendar.HOUR_OF_DAY,date1.getHours());
-                sleepTime.set(Calendar.MINUTE,date1.getMinutes());
                 Log.d("ABCABC",sleepTime.get(Calendar.HOUR_OF_DAY)+"");
                 Log.d("ABCABC",sleepTime.get(Calendar.MINUTE)+"");
 
@@ -231,32 +210,21 @@ public class MainActivity extends AppCompatActivity {
         }
         else if(requestCode==REQUEST_TYPE_FOR_WAKEUP){
             if(resultCode==RESULT_OK){
+                wakeupTime=getTimeAsCalendar(data.getStringExtra("Time"));
                 String timeDisplay=data.getStringExtra("Time");
-
-                SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm aa");
-                Date date1=new Date();
-                try {
-                    date1 = dateFormat.parse(data.getStringExtra("Time"));
-                    Log.e("Time", ""+date1);
-                } catch (ParseException e) {
-                    // TODO Auto-generated catch block
-                    Log.e("Error", ""+e);
-                }
-                wakeupTime.set(Calendar.HOUR_OF_DAY,date1.getHours());
-                wakeupTime.set(Calendar.MINUTE,date1.getMinutes());
 
                 setTextClockTimeFromString(wakeupTxtClck,timeDisplay);
             }
         }
     }
 
-    void setTextClockTime(TextClock txtClk, Calendar cal){
+    void setTextClockTime(TextView txtClk, Calendar cal){
         txtClk.setText(getTimeAsString(cal));
         Log.d("ABCABC",getTimeAsString(cal));
         Toast.makeText(this.getApplicationContext(),getTimeAsString(cal),Toast.LENGTH_LONG);
     }
 
-    void setTextClockTimeFromString(TextClock txtClk, String timeDisplay){
+    void setTextClockTimeFromString(TextView txtClk, String timeDisplay){
         txtClk.setText(timeDisplay);
         Log.d("ABCABC",timeDisplay);
         Toast.makeText(this.getApplicationContext(),timeDisplay,Toast.LENGTH_LONG);
@@ -280,5 +248,22 @@ public class MainActivity extends AppCompatActivity {
         return (hours)+":"+minutes+" "+AMPM;
     }
 
+    Calendar getTimeAsCalendar(String timeDisplay){
+        Calendar c=Calendar.getInstance();
 
+        SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm aa");
+        Date date1=new Date();
+        try {
+            date1 = dateFormat.parse(timeDisplay);
+            Log.e("Time", ""+date1);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            Log.e("Error", ""+e);
+        }
+        c.set(Calendar.HOUR_OF_DAY,date1.getHours());
+        c.set(Calendar.MINUTE,date1.getMinutes());
+
+        return c;
+
+    }
 }

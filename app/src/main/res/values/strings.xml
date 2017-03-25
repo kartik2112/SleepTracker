@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Sleep Tracker</string>
+    <string name="alarm_name">Alarm Name</string>
 </resources>

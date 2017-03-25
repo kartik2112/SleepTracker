@@ -5,6 +5,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -42,6 +43,14 @@ public class AlarmSetter extends AppCompatActivity {
 
                 String timeDisplay=(hours%12)+":"+minutes+" "+AMPM;
 
+                /**
+                 * This part will set wakeup time to this value
+                 */
+                SharedPreferences sp=getApplication().getSharedPreferences(getString(R.string.alarm_name),MODE_PRIVATE);
+                SharedPreferences.Editor editor=sp.edit();
+                editor.putString(getString(R.string.alarm_name),timeDisplay);
+                editor.commit();
+
                 Calendar c=Calendar.getInstance();
                 c.set(Calendar.HOUR_OF_DAY,hours);
                 c.set(Calendar.MINUTE,Integer.parseInt(minutes));
@@ -52,8 +61,6 @@ public class AlarmSetter extends AppCompatActivity {
                 alrm.set(AlarmManager.RTC_WAKEUP,c.getTimeInMillis(),pin);
 
                 setResult(Activity.RESULT_OK,i);
-
-
 
                 finish();
             }

@@ -27,7 +27,7 @@
                 android:src="@mipmap/sleep"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
-            <TextClock
+            <TextView
                 android:layout_weight="8"
                 android:id="@+id/sleepTextClock"
                 android:layout_toRightOf="@id/sleepTimeImageView"
@@ -54,7 +54,7 @@
                 android:src="@mipmap/wakeup"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
-            <TextClock
+            <TextView
                 android:layout_weight="8"
                 android:id="@+id/wakeupTextClock"
                 android:layout_toRightOf="@id/wakeUpTimeImageView"

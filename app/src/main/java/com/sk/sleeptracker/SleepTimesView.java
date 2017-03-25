@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.CalendarView;
 import android.widget.TextClock;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sk.sleeptracker.R;
@@ -16,7 +17,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 public class SleepTimesView extends AppCompatActivity {
-    private TextClock sleepTxtClck,wakeupTxtClck;
+    private TextView sleepTxtClck,wakeupTxtClck;
     private SQLiteDatabase sqlDB=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +25,8 @@ public class SleepTimesView extends AppCompatActivity {
         setContentView(R.layout.activity_sleep_times_view);
 
 
-        sleepTxtClck=(TextClock)findViewById(R.id.sleepTextClock);
-        wakeupTxtClck=(TextClock)findViewById(R.id.wakeupTextClock);
+        sleepTxtClck=(TextView)findViewById(R.id.sleepTextClock);
+        wakeupTxtClck=(TextView)findViewById(R.id.wakeupTextClock);
 
         Calendar c=Calendar.getInstance();
 
@@ -94,40 +95,6 @@ public class SleepTimesView extends AppCompatActivity {
 
             }
         });
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        Calendar c=Calendar.getInstance();
-
-        sqlDB=DBHandle.createDBTables(getApplicationContext());
-        Cursor findTimes=sqlDB.rawQuery("SELECT * FROM SleepTimes where Date='"+new SimpleDateFormat("yyyy-MM-dd").format(c.getTime())+"'",null);
-
-        try {
-            String dateHandle=null;
-            String sleepTime=null;
-            String wakeUpTime=null;
-
-            Log.d("ABCABC",findTimes.getCount()+" entries found for "+new SimpleDateFormat("yyyy-MM-dd").format(c.getTime()));
-            if(findTimes!=null){
-                if(findTimes.moveToFirst()){
-                    do{
-                        dateHandle=findTimes.getString( findTimes.getColumnIndex("Date"));
-                        sleepTime=findTimes.getString( findTimes.getColumnIndex("SleepTime"));
-                        wakeUpTime=findTimes.getString( findTimes.getColumnIndex("WakeupTime"));
-
-                    }while (findTimes.moveToNext());
-                }
-                sleepTxtClck.setText(sleepTime);
-                wakeupTxtClck.setText(wakeUpTime);
-            }
-        }
-        finally {
-            findTimes.close();
-            sqlDB.close();
-        }
     }
 
 }
