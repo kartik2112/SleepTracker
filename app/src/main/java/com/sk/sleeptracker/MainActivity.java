@@ -61,6 +61,14 @@ public class MainActivity extends AppCompatActivity {
         }
         else{
             wakeUpTimeSet=true;
+
+            /**
+             * This will set sleep and wakeup times to standard ones
+             */
+            sleepTime.set(Calendar.HOUR_OF_DAY,23);
+            sleepTime.set(Calendar.MINUTE,30);
+            setTextClockTime(sleepTxtClck,sleepTime);
+
             wakeupTime=getTimeAsCalendar(timeFromSP);
             setTextClockTime(wakeupTxtClck,wakeupTime);
         }
@@ -83,13 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
                     }while (findTimes.moveToNext());
                 }
-                sleepTxtClck.setText(sleepTimeS);
-                sleepTime=getTimeAsCalendar(sleepTimeS);
-
-                if(!wakeUpTimeSet){
-                    /**
-                     * Set wakeup time to dbValue if alarm is not set
-                     */
+                if(sleepTimeS!=null){
+                    sleepTxtClck.setText(sleepTimeS);
+                    sleepTime=getTimeAsCalendar(sleepTimeS);
+                }
+                if(wakeUpTimeS!=null){
                     wakeupTxtClck.setText(wakeUpTimeS);
                     wakeupTime=getTimeAsCalendar(wakeUpTimeS);
                 }
@@ -190,8 +196,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
 
@@ -221,13 +225,13 @@ public class MainActivity extends AppCompatActivity {
     void setTextClockTime(TextView txtClk, Calendar cal){
         txtClk.setText(getTimeAsString(cal));
         Log.d("ABCABC",getTimeAsString(cal));
-        Toast.makeText(this.getApplicationContext(),getTimeAsString(cal),Toast.LENGTH_LONG);
+        Toast.makeText(this.getApplicationContext(),getTimeAsString(cal),Toast.LENGTH_LONG).show();
     }
 
     void setTextClockTimeFromString(TextView txtClk, String timeDisplay){
         txtClk.setText(timeDisplay);
         Log.d("ABCABC",timeDisplay);
-        Toast.makeText(this.getApplicationContext(),timeDisplay,Toast.LENGTH_LONG);
+        Toast.makeText(this.getApplicationContext(),timeDisplay,Toast.LENGTH_LONG).show();
     }
 
     String getTimeAsString(Calendar cal){
